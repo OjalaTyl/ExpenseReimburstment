@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- ISO-8859-1 -->
+<meta charset="UTF-8">
+<title>Hello Manager</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"
+	integrity="sha384-nEnU7Ae+3lD52AK+RGNzgieBWMnEfgTbRHIwEvp1XXPdqdO6uLTd/NwXbzboqjc2"
+	crossorigin="anonymous">
+</head>
+<body>
+
+
+	<h2>Create New Ticket</h2>
+
+
+	<form id="ticketForm">
+		<select id="type" class="form-select mb-3"
+			aria-label="Default select example">
+
+			<option selected value="1">LODGING</option>
+			<option value="2">TRAVEL</option>
+			<option value="3">FOOD</option>
+			<option value="4">OTHER</option>
+		</select> <input class="form-control mb-3" id="amount" type="number"
+			placeholder="Amount" onchange="formatAmount()" step="0.01">
+		<textarea class="form-control mb-3" id="description"
+			placeholder="Description"></textarea>
+	</form>
+	<button type="button" class="btn btn-primary" onclick="submitTicket()">Submit
+		Ticket</button>
+	<br>
+
+	<h2>All Past Tickets</h2>
+	<div class="table-responsive">
+		<table id="ticketTable"
+			class="table table-dark table-hover caption-top">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>User ID</th>
+					<th>Username</th>
+					<th>Amount</th>
+					<th>Description</th>
+					<th>Type</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	<br>
+
+	<h2>Approve or Deny Tickets</h2>
+
+	<div>
+		<form>
+			<input class="form-select mb-3" id="ticket_id" type="number"
+				placeholder="id#">
+		</form>
+	</div>
+
+	<button type="button" class="btn btn-secondary" onclick="denyTicket()">Deny</button>
+	<button type="button" class="btn btn-primary" onclick="approveTicket()">Approve</button>
+
+	<script type="text/javascript" src="managerScript.js"></script>
+</body>
+</html>

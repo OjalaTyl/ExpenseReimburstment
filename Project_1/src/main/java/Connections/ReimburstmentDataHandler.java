@@ -1,0 +1,109 @@
+package Connections;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import models.Ticket;
+
+public class ReimburstmentDataHandler implements ReimburstmentDAO {
+
+	@Override
+	public List<Ticket> getTickets() {
+		List<Ticket> tickets = new ArrayList<>();
+		String sql = " SELECT * FROM reimburstment_ticket"; // sql statement
+
+		try (Connection conn = Connector.getConnection()) {
+			Statement s = conn.createStatement(); // Allows us to send SQL statements
+
+			ResultSet rs = s.executeQuery(sql); // We are executing our SQL statement
+
+			while (rs.next()) {
+				tickets.add(new Ticket(rs.getInt("reimburstment_ticket_id"), rs.getInt("reimburstment_user_id"),
+						rs.getString("username"), rs.getInt("amount"), rs.getString("description"),
+						rs.getInt("reimburstment_type"), rs.getInt("approved")));
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+		System.out.println(tickets);
+		return tickets;
+	}
+
+	@Override
+	public List<Ticket> getUserTickets(int user_id) {
+		List<Ticket> tickets = new ArrayList<>();
+		String sql = " SELECT * FROM reimburstment_ticket where reimburstment_user_id = ?"; // sql statement
+		System.out.println(user_id);
+		try (Connection conn = Connector.getConnection()) {
+			PreparedStatement s = conn.prepareStatement(sql); // Allows us to send SQL statements
+
+			s.setInt(1, user_id);
+
+			ResultSet rs = s.executeQuery(); // We are executing our SQL statement
+
+			while (rs.next()) {
+				tickets.add(new Ticket(rs.getInt("reimburstment_ticket_id"), rs.getInt("reimburstment_user_id"),
+						rs.getString("username"), rs.getInt("amount"), rs.getString("description"),
+						rs.getInt("reimburstment_type"), rs.getInt("approved")));
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(tickets);
+			System.out.println(user_id);
+		}
+		return tickets;
+	}
+
+	@Override
+	public void makeTicket(Ticket t) {
+		String callableSql = "CALL make_ticket(?,?,?,?,?,?)";
+
+		try (Connection conn = Connector.getConnection()) {
+			CallableStatement cs = conn.prepareCall(callableSql);
+			cs.setInt(1, t.getReimburstment_user_id());
+			cs.setString(2, t.getUsername());
+			cs.setDouble(3, t.getAmount());
+			cs.setString(4, t.getDescription());
+			cs.setInt(5, t.getReimburstment_type());
+			cs.setInt(6, t.getApproved());
+
+			cs.execute();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+	}
+
+	@Override
+	public void resolveTicket(int approve, int ticket_id) {
+		try (Connection conn = Connector.getConnection()) {
+
+			String sql = "UPDATE reimburstment_ticket set approved = ? where reimburstment_ticket_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, approve);
+			ps.setInt(2, ticket_id);
+
+			ps.execute();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

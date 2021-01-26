@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Employee Reimbursement</title>
+
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"
+	integrity="sha384-nEnU7Ae+3lD52AK+RGNzgieBWMnEfgTbRHIwEvp1XXPdqdO6uLTd/NwXbzboqjc2"
+	crossorigin="anonymous">
+</head>
+
+<body>
+
+	<h2>Create New Ticket</h2>
+
+	<form id="ticketForm">
+		<select id="type" class="form-select mb-3">
+			<option selected value="1">LODGING</option>
+			<option value="2">TRAVEL</option>
+			<option value="3">FOOD</option>
+			<option value="4">OTHER</option>
+		</select> <input class="form-control mb-3" id="amount" type="number"
+			placeholder="Amount" onchange="formatAmount()" step="0.01">
+		<textarea class="form-control mb-3" id="description"
+			placeholder="Description"></textarea>
+	</form>
+
+	<button type="button" class="btn btn-secondary" onclick="resetForm()">Cancel</button>
+	<button type="button" class="btn btn-primary" onclick="submitTicket()">Submit
+		Ticket</button>
+
+	<br>
+	<br>
+	<h2>Your Past Tickets</h2>
+	<div class="table">
+		<table id="ticketTable"
+			class="table table-primary">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>User ID</th>
+					<th>Username</th>
+					<th>Amount</th>
+					<th>Description</th>
+					<th>Type</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+
+
+
+	<script type="text/javascript" src="employeeScript.js"></script>
+</body>
+</html>
